@@ -9,7 +9,7 @@ This is the repository for the source code to the publication **Meshless Methods
 * Becker, Markus, Markus Ihmsen, and Matthias Teschner. "Corotated SPH for Deformable Solids." NPH. 2009.
 * Müller, Matthias, et al. "Point based animation of elastic, plastic and melting objects." Proceedings of the 2004 ACM SIGGRAPH/Eurographics symposium on Computer animation. Eurographics Association, 2004.
 
-Additionaly, an updated Lagrangian as well as a Total Lagrangian FEM algorithm is implemented to provide reference simulations. Results are written to disk using the legacy vtk formatm, which can be viewed using [paraview](https://www.paraview.org/).
+Additionaly, an updated Lagrangian as well as a Total Lagrangian FEM algorithm is implemented to provide reference simulations. Results are written to disk using the legacy vtk format, which can be viewed using [paraview](https://www.paraview.org/).
 
 mfree_iwf does not need any dependencies and has been written in C++14, although a C++11 compatible compiler might suffice (not tested). Makefiles for both a Debug and Release build are provided. mfree_iwf was developed at ETH Zurich and was written by:
 * Matthias Röthlin (mroethli@ethz.ch)
