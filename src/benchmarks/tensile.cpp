@@ -738,6 +738,7 @@ std::vector<body<particle_tl_weak>> tensile_tl_weak(unsigned int nbox) {
 	double L = 1.;
 
 	double dx = L/(nbox-1);
+	double hdx = 1.3;
 
 	double dt = 1e-7;
 
@@ -788,16 +789,25 @@ std::vector<body<particle_tl_weak>> tensile_tl_weak(unsigned int nbox) {
 	bc.add_boundary_condition(right_bndry, &right_bndry_fun_tl);
 
 	for (unsigned int i = 0; i < n; i++) {
-		particles[i]->quad_weight = 1.;	//uniform unit weights for fem nodes
+		particles[i]->rho = rho0;
+		particles[i]->h = hdx*dx;
 		particles[i]->m = dx*dx*rho0;
+		particles[i]->quad_weight = particles[i]->m/particles[i]->rho;
 	}
 
 	for (unsigned int i = 0; i < num_gp; i++) {
+		gauss_points[i]->h   = hdx*dx;
 		gauss_points[i]->rho = rho0;
 	}
 
+	find_neighbors(particles,  n, hdx*dx, distance_euclidian);
+	find_neighbors(particles, n, gauss_points, num_gp, hdx*dx, distance_euclidian);
+
+	precomp_rkpm<particle_tl_weak>(particles, gauss_points, num_gp);
+	precomp_rkpm<particle_tl_weak>(particles, n);
+
 	physical_constants physical_constants(nu, E, rho0);
-	simulation_data sim_data(physical_constants, correction_constants());
+	simulation_data sim_data(physical_constants, correction_constants(constants_monaghan(), constants_artificial_viscosity(), 0, true));
 
 	body<particle_tl_weak> b(particles, n, sim_data, dt, bc, gauss_points, num_gp);
 
